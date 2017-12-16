@@ -23,11 +23,13 @@ Let $\v \Sigma$ be a square, symmetric matrix. Then its eigendecomposition is gi
 \subsection{Multivariate Normal Distributions (MVNs)}
 Let $X$ be a D-dimensional MVN random vector with mean $\v\mu$ and covariance matrix $\v\Sigma$, denoted $X \sim \mathcal{N}\left(\v\mu,\v\Sigma\right)$. Then the pdf of $X$ is
 $$ p(x) = \left(2\pi\right)^{-D/2} |\v\Sigma|^{-1/2} \exp{[-\frac{1}{2}(x-\v\mu)^T\v\Sigma^{-1}(x-\v\mu)]}, $$
-where for many problems we focus on the quadratic form $(x-\v\mu)^T\v\Sigma^{-1}(x-\v\mu)$ (which geometrically can be thought of as distance) and ignore the normalization factor $\left(2\pi\right)^{-D/2} |\v\Sigma|^{-1/2}$. The figure below plots the contours of a bivariate Normal for various $\v\mu$ and $\v\Sigma$ (in the figure, $\rho$ denotes the off-diagonal elements of $\v\Sigma$, given by the covariance of $x_1$ and $x_2$).
+where for many problems we focus on the quadratic form $(x-\v\mu)^T\v\Sigma^{-1}(x-\v\mu)$ (which geometrically can be thought of as distance) and ignore the normalization factor $\left(2\pi\right)^{-D/2} |\v\Sigma|^{-1/2}$. Note that MVNs are identifiable using just their first and second moments. %The figure below plots the contours of a bivariate Normal for various $\v\mu$ and $\v\Sigma$ (in the figure, $\rho$ denotes the off-diagonal elements of $\v\Sigma$, given by the covariance of $x_1$ and $x_2$).
 
-\begin{center}
+\begin{figure}[H]
+\centering
 \includegraphics[width=\textwidth]{MVN_contour.png}
-\end{center}
+\caption{Contours of a bivariate Normal for various $\v\mu$ and $\v\Sigma$ (in the figure, $\rho$ denotes the off-diagonal elements of $\v\Sigma$, given by the covariance of $x_1$ and $x_2$)}\label{fig1}
+\end{figure}
 
 Note that we can decompose $\v\Sigma$ as
 \begin{align*}
@@ -42,7 +44,7 @@ where $(x-\v\mu)^T U_d$ can be interpreted as the projection of $(x-\v\mu)$ onto
 Let $x\sim\mathcal{N}(0,\v I)$ and $y = \v A x + \v b$. We want to consider two ways of obtaining the complete distribution of $y$.
 
 \begin{itemize}
-\item 'Overkill': We can perform a change of variables\footnote{A change of variables can be done in the following way: Let $y=f(x)$ and assume $f$ is invertible so that $x=f^{-1}(y)$. Then $p(y) = p(x)|dx/dy|$.  This is a technique which will be used often in this course}. Here, we have $x = \v A^{-1}$ and $|dx/dy| = \v |A^{-1}|$, leading to
+\item 'Overkill': We can perform a change of variables\footnote{A change of variables can be done in the following way: Let $y=f(x)$ and assume $f$ is invertible so that $x=f^{-1}(y)$. Then $p(y) = p(x)|dx/dy|$.  This is a technique which will be used often in this course.}. Here, we have $x = \v A^{-1}$ and $|dx/dy| = \v |A^{-1}|$, leading to
 \begin{align*}
 p(y) &= \mathcal{N}\left(\v A^{-1}(y-\v b)|0,\v I\right)|\v A^{-1}| \\
 &= \frac{1}{z}\exp{[(\v A^{-1}(y-\v b))^T(\v A^{-1}(y-\v b))]} \\
@@ -61,7 +63,7 @@ Let $x$ be a D-dimensional random vector, distributed as $\mathcal{N}(0,I/D)$, w
 $$ \E\left(\lVert x \rVert^2\right) = \E\left(\sum_d{x_d^2}\right) = D\sigma_d^2 = 1, $$
 which means that $x$ is expected to be on the boundary of a unit sphere centered at the origin. Moreover, the variance of the length is
 $$ \text{var}\left({\lVert x \rVert}^2 \right) = D\cdot\left(\E(x^4) - \E\left(x^2\right)^2\right) = D\cdot(3\sigma^4-\sigma^4) = 2D/D^2 = 2/D$$
-Thus, it is not only expected that $x$ lies on the boundary but as $D$ increases most of its realizations will in fact fall on the boundary\footnote{It is left as an exercise to show that this formula holds.  Hint: Use the fact that we assumed no covariance.}.
+Thus, it is not only expected that $x$ lies on the boundary but as $D$ increases most of its realizations will in fact fall on the boundary\footnote{It is left as an exercise to show that this formula holds.  Hint: Use the fact that we assumed no covariance.}. A good illustration can be found at \url{http://www.inference.vc/high-dimensional-gaussian-distributions-are-soap-bubble/}.
 
 \subsubsection{Key Formulas for MVN: Marginalization and Conditioning}
 Let $X \sim \mathcal{N}\left(\v\mu,\v\Sigma\right)$ with
@@ -82,16 +84,61 @@ Note that this equals
 $$ p(x_1)\int_{x_2}{p(x_2|x_1)dx_2}, $$
 implying that $X_1\sim\mathcal{N}(\v\mu_1,\v\Sigma_{11})$. 
 
-While the marginals have a simple form, the conditionals are more complicated.  (For a complete derivation, which requires matrix inversion lemmas, refer to Murphy.) It can be shown that $ X_1|X_2 \sim \mathcal{\v\mu_{1|2},\v\Sigma_{1|2}}$ with
+While the marginals have a simple form, the conditionals are more complicated.  (For a complete derivation, which requires matrix inversion lemmas, refer to Murphy 4.3.1 and 4.3.4.3.) It can be shown that $ X_1|X_2 \sim \mathcal{N}\left(\v\mu_{1|2},\v\Sigma_{1|2}\right)$ with
 $$ \v\mu_{1|2} = \v\mu_1+\v\Sigma_{12}\v\Sigma_{22}^{-1}(x_2-\v\mu_2), \quad
 \v\Sigma_{1|2} = \v\Sigma_{11}-\v\Sigma_{12}\v\Sigma_{22}^{-1}\v\Sigma_{21}.$$
 \subsubsection{Information Form}
-An alternative formulation, called information form, uses the precision matrix (inverse variance) $\Lambda = \Sigma^{-1}$. Partitioning $\Lambda$ as
+An alternative parametrization, called information form, uses the precision matrix (inverse variance) $\v\Lambda = \v\Sigma^{-1}$. 
+Suppose $\v x\sim\mathcal{N}\left(\v\mu,\v\Sigma\right)$, then the mean vector $\v\mu$ and the covariance matrix $\v\Sigma$ are called the \textbf{moment parameters} of the distribution. Sometimes it is useful to use the \textbf{canonical parameters} or \textbf{natural parameters}, defined as
+$$ \v\Lambda= \v\Sigma^{-1},\;\v\xi=\v\Sigma^{-1}\v\mu $$
+We can convert back to the moment parameters using
+$$ \v\mu=\v\Lambda^{-1}\v\xi,\;\v\Sigma = \v\Lambda^{-1} $$
+Using the canonical parameters, we can write the MVN in \textbf{information form} (i.e., in exponential family form, see Murphy Section 9.2):
+$$ \mathcal{N}_c\left(\v x|\v\xi,\v\Lambda\right)=(2\pi)^{-D/2}|\v\Lambda|^{\frac{1}{2}}\exp\left[-\frac{1}{2}\left(\v x^\intercal \v\Lambda\v x+\v\xi^\intercal\v\Lambda^{-1}\v\xi-2\v x^\intercal\v\xi\right)\right] $$
+where we use the notation $\mathcal{N}_c()$ to distinguish from the moment parameterization $\mathcal{N}()$. Partitioning $\Lambda$ as
 $$ \v\Lambda = \begin{pmatrix}
 \v\Lambda_{11} & \v\Lambda_{12} \\
 \v\Lambda_{21} & \v\Lambda_{22}
 \end{pmatrix}, $$
-the covariance matrices of the conditional distributions have a simple form. For example, the covariance matrix of $X_1$ given $X_2$ is $\Lambda_{1|2}=\Lambda_{11}$. However, the simplicity of the conditional precision comes at the cost of marginalization (which was simple when using $\Sigma$) becoming a more complicated expression (see Murphy subsection 4.3 for more details).
+we can derive the marginalization and conditioning formulas in information form:
+\begin{align*}
+p(\v x_2) =&\; \mathcal{N}_c\biggl(\v x_2|\v\xi_2-\v\Lambda_{21}\v\Lambda_{11}^{-1}\v\xi_1,\v\Lambda_{22}-\v\Lambda_{21}\v\Lambda_{11}^{-1}\v\Lambda_{12}\biggr)\\
+p(\v x_1|\v x_2)=&\; \mathcal{N}_c\biggl(\v x_1|\v \xi_1 - \v\Lambda_{12}\v x_2,\v\Lambda_{11}\biggr).
+\end{align*}
+The covariance matrices of the conditional distributions have a simple form. For example, the covariance matrix of $\v x_1$ given $\v x_2$ is $\v\Lambda_{1|2}=\v\Lambda_{11}$. However, the simplicity of the conditional precision comes at the cost of marginalization (which was simple when using $\v\Sigma$) becoming a more complicated expression (see Murphy subsection 4.3 for more details).
+
+%\newpage
+\vspace{0.4in}
+
+\begin{exercise}
+See hint 2.
+\end{exercise}
+
+\begin{proof}
+$x$ is a D-dimensional random vector, distributed as $\mathcal{N}(0,I/D)$, where $I$ is the identity. So for each dimension $d\in \{1,2,\ldots,D\}$, we have $x_d\sim\mathcal{N}(0,1/D)$ independently. Thus the expected length of $x$ is
+\begin{align*}
+\E\left(\lVert x \rVert^2\right) = \E\left(\sum_d{x_d^2}\right) = \sum_{d} \E\left(x_d^2\right) = \sum_{d} 1/D = D\cdot 1/D = 1
+\end{align*}
+
+which means that $x$ is expected to be on the boundary of a unit sphere centered at the origin.
+
+Moreover, we have
+\begin{align*}
+\E(\|x\|^4) =& \E\left(\left(\sum_{d}x_d^2\right)^2\right)=\E\left(\sum_d x_d^4 + \sum_{d}\sum_{d':d'\neq d}x_d^2 x_{d'}^2\right)\\
+=& \sum_{d}\E\left(x_d^4\right) + \sum_{d}\sum_{d':d'\neq d}\E\left(x_d^2 x_{d'}^2\right)\\
+=& \sum_{d} 3/D^2 + \sum_{d}\sum_{d':d'\neq d} \E\left(x_d^2\right)\E\left(x_{d'}^2\right)\qquad\quad\text{since }x_d{\perp\!\!\!\perp} x_{d'}\\
+=& 3/D + \sum_{d}\sum_{d':d'\neq d} 1/D^2\\
+=& 3/D + D(D-1)\cdot 1/D^2\\
+=& 3/D + (D-1)/D\\
+=& 2/D + 1
+\end{align*}
+
+Therefore, the variance of the length is
+$$ \text{var}\left({\lVert x \rVert}^2 \right) = \E\left(\|x\|^4\right)-\left(\E(\|x\|^2)\right)^2=
+2/D + 1 - 1 = 2/D \rightarrow 0 \quad\text{as }\;D\rightarrow\infty$$
+Thus, it is not only expected that $x$ lies on the boundary but as $D$ increases most of its realizations will in fact fall on the boundary.
+\end{proof}
+
 
 \end{document}
 
